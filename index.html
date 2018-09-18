@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concert Finder</title>
+    <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYmVQhuCZm_6rTtCi9Wxr-17jfFFkT6Kc&libraries=places&callback"
+        async defer></script>
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <header>CONCERT FINDER</header>
+    <div class="main">
+        <div class="center">
+            <div id="loader" class="hidden"></div>
+            <div class="home">
+                <div class="banner">
+                    <img src="images/concert2.jpg" alt="">
+                </div>
+                <div class="inputs">
+                    <div class="city">
+                        Enter a City
+                        <input id="city" type="text" placeholder="Enter a City">
+                    </div>
+                    <div class="genre">
+                        Select a Music Genre
+                        <select id="genre">
+                            <option value="rock">Rock</option>
+                            <option value="pop">Pop</option>
+                            <option value="country">Country</option>
+                            <option value="rap">Rap</option>
+                        </select>
+                    </div>
+                    <button type="button" id="searchGenre">FIND CONCERTS</button>
+                </div>
+            </div>
+            <div class="event-results hidden">
+
+                <div class="event-header">
+                    <div class="reset-btn">
+                        <button class="reset-2">BACK</button>
+                    </div>
+                    EVENTS
+
+
+                    <p>search results</p>
+                </div>
+                <div class="events-body">
+
+                </div>
+                <div class="btn-div">
+                    <button class="reset">RESET SEARCH</button>
+                </div>
+            </div>
+
+            <div class="concert-details hidden">
+                <div class="concert-header">
+
+                    Concert Details
+                </div>
+                <div class="concert-details-body">
+                    <div class="image-body">
+                        <img class="pageThreeArtistImg" src="" alt="">
+                    </div>
+                    <div class="venue-info">
+                        <div class="artist-name"> ARTIST NAME:
+                            <span class="pageThreeNameSpan">
+                            </span>
+                        </div>
+                        <div class="venue-name">VENUE:
+                            <span class="pageThreeVenueNameSpan">
+                            </span>
+                        </div>
+                        <div class="venue-address">VENUE ADDRESS:
+                            <span class="pageThreeVenueAddressSpan">
+                            </span>
+                        </div>
+
+                    </div>
+                    <div class="date-time">
+                        <div class="date">DATE:
+                            <span class="pageThreeDateSpan"></span>
+                        </div>
+                        <div class="time">TIME:
+                            <span class="pageThreeTimeSpan"></span>
+                        </div>
+                        <button id="tickets" type="button">
+                            <i class="fas fa-ticket-alt"></i>BUY TICKETS</button>
+                    </div>
+
+                    <div class="search-nearby">
+                        Search Nearby
+                    </div>
+                    <div class="search-btns">
+                        <button id="restaurant" value="restaurant">
+                            <i class="fas fa-utensils"></i>Restaurants</button>
+                        <button id="bar" value="bars">
+                            <i class="fas fa-glass-martini"></i>Bars</button>
+                        <button id="lodging" value="lodging">
+                            <i class="fas fa-bed"></i>Hotels</button>
+                    </div>
+                    <div class="back-btns">
+                        <div class="left-btn">
+                            <button class="results">BACK TO SEARCH RESULTS</button>
+                        </div>
+                        <div class="right-btn">
+                            <button class="reset">RESET SEARCH</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="google-maps hidden">
+                <div id="map">GOOGLE MAPS</div>
+                <div class="back-btns">
+                    <div class="left-btn">
+                        <button class="back-to-details">BACK TO CONCERT DETAILS</button>
+                    </div>
+                    <div class="right-btn">
+                        <button class="reset">RESET SEARCH</button>
+                    </div>
+                </div>
+            </div>
+            <div class="yelp hidden">
+                <div class="yelp-header">YELP INFO</div>
+                <div class="yelp-body">
+                    <div class="place-name"></div>
+                    <div class="star-rating">
+                        <img id="stars" src="" alt="">
+                    </div>
+                    <div class="price-rating"></div>
+                    <div class="yelp-images">
+                        <img id="yelpImage1" class="food" src="" alt="">
+                        <img id="yelpImage2" class="food" src="" alt="">
+                        <img id="yelpImage3" class="food" src="" alt="">
+                    </div>
+                    <div class="business-phone"></div>
+                    <div class="business-hours"></div>
+                    <div class="business-address"></div>
+                    <div class="yelp-link">
+                        <a id="yelpURL" href="" target="_blank">Click here to check out more information on Yelp</a>
+                    </div>
+                    <div class="back-btns">
+                        <div class="left-btn">
+                            <button class="back-to-map">BACK TO MAP</button>
+                        </div>
+                        <div class="right-btn">
+                            <button class="reset">RESET SEARCH</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="errorModal" class="shadow1">
+        <div class="searchBoxError">
+            <p>No concerts found...
+                <img src="images/tumble.gif" alt="tumbleweed">
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
