@@ -104,7 +104,7 @@ function getVenueData(city, genre) {
                 page2DomCreation(venueSearchResults);
                 transitionPages('page1', 'page2');
             } else {
-                showErrorModal();
+                showErrorModal("No concerts found in this area, try again!");
             }
         },
         error: function (err) {
@@ -444,7 +444,7 @@ function getYelpBusinessID(name, address1, city) {
                 getYelpBusinessDetails(businessID);
             } else {
                 $('#loader').addClass('hidden');
-                window.alert('Business listing not found, try again!')
+                showErrorModal('Business listing not found, try again!')
             }
         },
         error: function () {
@@ -553,6 +553,7 @@ window.onclick = function (event) {
 /*************************************************************************************************
  * showErrorModal - shows modal that displays error if no concerts in said city
  */
-function showErrorModal() {
+function showErrorModal(errorText) {
+    $('.searchBoxError .error-text').text(errorText);
     $('.shadow1').css('display', 'inline-block');
 }
