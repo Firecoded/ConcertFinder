@@ -125,11 +125,7 @@ function getVenueData(city, genre) {
 function page2DomCreation(venueSearchResults) {
     $('.events-body').empty();
     for (var resultIndex = 0; resultIndex < venueSearchResults.length; resultIndex++) {
-        if (resultIndex % 2 === 0) {
-            var eachEventDetailBody = $('<div>', { 'class': 'light' });
-        } else {
-            var eachEventDetailBody = $('<div>', { 'class': 'dark' });
-        }
+        var eachEventDetailBody = $('<div>', { 'class': 'light' });
         var leftEventDiv = $('<div>', { 'class': 'left-event' });
         var eachArtistName = $('<div>', { 'class': 'artist', text: 'ARTIST: ' });
         var artistObject = $('<span>').text(venueSearchResults[resultIndex].name);
@@ -341,6 +337,7 @@ function initializeMap(type) {
  * @calls createMarker
  */
 function callback(results, status) {
+    console.log('results and status', results, status)
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             var place = results[i];
