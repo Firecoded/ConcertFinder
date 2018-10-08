@@ -21,6 +21,7 @@ header {
     width: 100%;
     margin: 0;
     padding: 0;
+    text-shadow: 2px 2px 0 black;
 }
 
 .main {
@@ -35,6 +36,10 @@ header {
 .city,
 .genre {
     display: inline-block;
+}
+.city,
+.genre{
+    text-shadow: 2px 2px 0 black; 
 }
 
 .center {
@@ -87,7 +92,7 @@ input {
 
 .city,
 .genre {
-    font-size: 2vmin;
+    font-size: 4vmin;
     color: white;
 }
 
@@ -112,7 +117,7 @@ input {
 }
 
 .event-header {
-    padding-top: 5%;
+    padding-top: 3%;
     border: 2px solid white;
     box-sizing: border-box;
     font-size: 6vmin;
@@ -120,6 +125,7 @@ input {
     color: white;
     width: 100%;
     margin: 0;
+    text-shadow: 2px 2px 0 black;
 }
 
 .event-header>p {
@@ -140,7 +146,8 @@ input {
 }
 
 .light {
-    background-color: white;
+    background-color: rgb(228, 228, 228);
+    border-bottom: 1px solid coral;
 }
 
 .left-event,
@@ -166,14 +173,47 @@ input {
     padding-left: 2%;
 }
 
-.artist,
-.venue,
-.results-city,
-.date,
-.time {
+.light .artist,
+.light .venue,
+.light .results-city,
+.light .date,
+.light .time {
     font-weight: bold;
     padding: 1%;
+    color: hsl(0, 0%, 29%);
+    font-size: 2.2vmin;
+    text-shadow: 1px 1px 0 hsl(16, 100%, 88%);
 }
+.light .artist span,
+.light .venue span,
+.light .results-city span,
+.light .date span,
+.light .time span {
+    font-size: 2.5vmin;
+    color: hsl(0, 0%, 13%);
+    text-shadow: 1px 1px 0 hsl(16, 100%, 88%);
+}
+.dark .artist,
+.dark .venue,
+.dark .results-city,
+.dark .date,
+.dark .time {
+    font-weight: bold;
+    padding: 1%;
+    color: hsl(16, 95%, 77%);
+    font-size: 2.2vmin;
+    text-shadow: 1px 1px 0 hsl(16, 94%, 53%);
+}
+.dark .artist span,
+.dark .venue span,
+.dark .results-city span,
+.dark .date span,
+.dark .time span {
+    font-size: 2.5vmin;
+    color: hsl(0, 100%, 93%);
+    text-shadow: 1px 1px 0 hsl(16, 94%, 53%);
+}
+
 
 .details {
     width: 12vmin;
@@ -224,6 +264,7 @@ input {
     text-align: center;
     color: white;
     width: 100%;
+    text-shadow: 2px 2px 0 black;
 }
 
 .concert-details-body {
@@ -257,6 +298,27 @@ input {
     font-weight: bold;
     display: inline-block;
 }
+.venue-name,
+.artist-name,
+.venue-address,
+.date,
+.time {
+    font-weight: bold;
+    padding: 1%;
+    color: hsl(0, 0%, 29%);
+    font-size: 2.2vmin;
+    text-shadow: 1px 1px 0 hsl(16, 100%, 88%);
+}
+.pageThreeNameSpan,
+.pageThreeVenueNameSpan,
+.pageThreeVenueAddressSpan,
+.pageThreeDateSpan,
+.pageThreeTimeSpan{
+    font-size: 2.5vmin;
+    color: hsl(0, 0%, 13%);
+    text-shadow: 1px 1px 0 hsl(16, 100%, 88%);
+}
+
 
 span {
     font-weight: 400;
@@ -557,10 +619,17 @@ a:hover {
         font-size: 7vmin;
         height: 8%;
     }
+    .inputs{
+        margin-top: 30px;
+    }
+    .banner{
+        margin-top: 20px;
+    }
     #searchGenre {
-        width: 50vmin;
-        height: 10vmin;
-        font-size: 4.5vmin;
+        margin-top: 40px;
+        width: 60%;
+        height: 30%;
+        font-size: 1rem;
     }
     .back-btns {
         margin-top: 5px;
