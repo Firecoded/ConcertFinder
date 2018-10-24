@@ -337,7 +337,6 @@ function initializeMap(type) {
  * @calls createMarker
  */
 function callback(results, status) {
-    console.log('results and status', results, status)
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
             var place = results[i];
@@ -375,11 +374,15 @@ function createMarker(place) {
         contentStr: ""
     });
 
-
-
-    google.maps.event.addListener(marker, 'click', function () {
-
+    google.maps.event.addListener(marker, 'click', function () {    
         service.getDetails(request, function (place, status) {
+            var name = place.name;
+            var addressStringArray = place.formatted_address.split(",");
+            var address1 = addressStringArray[0];
+            var city = addressStringArray[1];
+            $('.google-maps').on("click", ".yelp-transition", function (){
+                goToYelp(name, address1, city)
+            });
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var contentStr = '<h3>' + place.name + '</h3><p>' + place.formatted_address;
                 if (!!place.formatted_phone_number) contentStr += '<br>' + place.formatted_phone_number;
@@ -398,18 +401,14 @@ function createMarker(place) {
                 infowindow.setContent(contentStr);
                 infowindow.open(map, marker);
             }
-            var name = place.name;
-            var addressStringArray = place.formatted_address.split(",");
-            var address1 = addressStringArray[0];
-            var city = addressStringArray[1];
-            $('.yelp-transition').click(function () {
-                goToYelp(name, address1, city);
-            });
         });
     });
 }
 
 function goToYelp(name, address1, city) {
+    $('yelp').empty();
+    $('#yelpImage1 #yelpImage2 #yelpImage3')
+    $('.google-maps').off("click", ".yelp-transition");
     $('#loader').removeClass('hidden');
     getYelpBusinessID(name, address1, city);
 }
@@ -478,7 +477,7 @@ function getYelpBusinessDetails(id) {
 }
 
 function renderYelpDetails(details) {
-    $('#loader').addClass('hidden');
+    
     $('.place-name').text(details.name);
     var starObject = {
         0: 'images/0.png',
@@ -511,7 +510,7 @@ function renderYelpDetails(details) {
     $('#yelpImage3').attr('src', image3);
     $('.business-phone').text('Phone: ' + details.display_phone);
     $('.business-hours').text(function () {
-        if (details.hours[0].is_open_now) {
+        if (!details.is_closed) {
             return "Open now";
         }
         else {
@@ -520,7 +519,9 @@ function renderYelpDetails(details) {
     });
     $('.business-address').text('Address: ' + details.location.display_address);
     $('#yelpURL').attr('href', details.url);
+    
     transitionPages('page4', 'page5');
+    $('#loader').addClass('hidden');
 }
 
 /*************************************************************************************************

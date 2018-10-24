@@ -449,6 +449,8 @@ i {
     font-weight: bold;
     color: coral;
     text-decoration-line: underline;
+    z-index: 10000;
+    cursor: pointer;
 }
 
 .yelp-body {
