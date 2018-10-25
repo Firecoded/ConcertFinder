@@ -12,7 +12,7 @@ body {
 header {
     background-color: #4c4d52;
     text-align: center;
-    font-family: 'Monoton', cursive;
+    font-family: 'Monoton', cursive, sans-serif;
     color: white;
     font-size: 9vmin;
     font-weight: bold;
@@ -52,6 +52,9 @@ header {
     display: none;
 }
 
+button {
+    cursor: pointer !important;
+}
 /* ******************LANDING PAGE STYLING************************ */
 
 .city,
@@ -66,6 +69,7 @@ header {
 .banner>img {
     width: 100%;
     border: 2px solid white;
+    border-radius: 10px;
 }
 
 .inputs {
@@ -119,6 +123,7 @@ input {
 .event-header {
     padding-top: 3%;
     border: 2px solid white;
+    border-radius: 10px 10px 0 0;
     box-sizing: border-box;
     font-size: 6vmin;
     text-align: center;
@@ -259,6 +264,7 @@ input {
 
 .concert-header {
     border: 2px solid white;
+    border-radius: 10px 10px 0 0;
     box-sizing: border-box;
     font-size: 6vmin;
     text-align: center;
@@ -416,6 +422,7 @@ i {
 #map {
     width: 100%;
     height: 80%;
+    border-radius: 10px;
 }
 
 .back-to-details,
@@ -437,6 +444,7 @@ i {
 
 .yelp-header {
     border: 2px solid white;
+    border-radius: 10px 10px 0 0;
     box-sizing: border-box;
     font-size: 6vmin;
     text-align: center;
@@ -694,6 +702,7 @@ a:hover {
     width: 50%;
     background-color: #4c4d52;
     border: 5px solid white;
+    border-radius: 10px 10px 0 0;
     transform: translate(50%, 50%);
     text-align: center;
 }
@@ -705,3 +714,4 @@ a:hover {
     top: 20%;
     position: relative;
 }
+

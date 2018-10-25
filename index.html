@@ -3,8 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Concert Finder</title>
+    <meta name="description" content="Web app designed to help you find concerts and plan activies before and after the show.">
+    <meta name="keywords" content="Concert, Finder, Ticketmaster, Find concert, APIs, Jacob Taylor, CA, Irvine, Jacob D Taylor, Web Developer, Web Designer, Front End, Jr Web Developer">
+    <meta name="robots" content = "index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Jacob Taylor">
+
     <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
         crossorigin="anonymous">
@@ -22,23 +27,23 @@
             <div id="loader" class="hidden"></div>
             <div class="home">
                 <div class="banner">
-                    <img src="images/concert2.jpg" alt="">
+                    <img src="images/concert2-min.jpg" alt="Picture of crowd at a concert">
                 </div>
                 <div class="inputs">
                     <div class="city">
                         Enter a City
-                        <input id="city" type="text" placeholder="Enter a City">
+                        <input id="city" type="text" placeholder="Enter a City" label = "Enter City">
                     </div>
                     <div class="genre">
                         Select a Genre
-                        <select id="genre">
+                        <select id="genre" label ="Select Genre">
                             <option value="rock">Rock</option>
                             <option value="pop">Pop</option>
                             <option value="country">Country</option>
                             <option value="rap">Rap</option>
                         </select>
                     </div>
-                    <button type="button" id="searchGenre">FIND CONCERTS</button>
+                    <button type="button pointer" id="searchGenre">FIND CONCERTS</button>
                 </div>
             </div>
             <div class="event-results hidden">
