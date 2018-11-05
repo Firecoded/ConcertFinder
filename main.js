@@ -33,6 +33,8 @@ var pageClasses = {
 
 function initializeApp() {
     addClickHandlers();
+    $('select').formSelect();
+    $('#genre').hide();
 }
 
 /***************************************************************************************************
@@ -69,7 +71,8 @@ function addClickHandlers() {
 * @calls getVenueData AJAX function with city and genre variables as parameters
 */
 
-function handleSearchClick() {
+function handleSearchClick(e) {
+    e.preventDefault();
     var genreInput = $('#genre :selected');
     var genre = genreInput.val();
     var city = $('#city').val();
@@ -381,6 +384,7 @@ function createMarker(place) {
             var address1 = addressStringArray[0];
             var city = addressStringArray[1];
             $('.google-maps').on("click", ".yelp-transition", function (){
+                console.log(name, address1, city)
                 goToYelp(name, address1, city)
             });
             if (status == google.maps.places.PlacesServiceStatus.OK) {

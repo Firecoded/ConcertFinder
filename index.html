@@ -16,6 +16,11 @@
         crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYmVQhuCZm_6rTtCi9Wxr-17jfFFkT6Kc&libraries=places&callback"
         async defer></script>
     <script src="main.js"></script>
@@ -30,24 +35,22 @@
                 <div class="banner">
                     <img src="images/concert2-min.jpg" alt="Picture of crowd at a concert">
                 </div>
-                <div class="inputs">
-                    <div class="city">
-                        <label>Enter a City
-                            <input id="city" type="text" placeholder="Enter a City">
-                        </label>    
-                    </div>
-                    <div class="genre">
-                        <label>Select a Genre
+                <form onsubmit="handleSearchClick()">
+                    <div class="inputs">
+                        <div class="city">
+                            <input placeholder="Enter a City" type="text" >  
+                        </div>
+                        <div class="genre">
                             <select id="genre">
-                                <option value="rock">Rock</option>
+                                <option value="rock" selected>Rock</option>
                                 <option value="pop">Pop</option>
                                 <option value="country">Country</option>
                                 <option value="rap">Rap</option>
                             </select>
-                        </label>
+                        </div>
+                        <button type="button pointer" id="searchGenre">FIND CONCERTS</button>
                     </div>
-                    <button type="button pointer" id="searchGenre">FIND CONCERTS</button>
-                </div>
+                </form>    
             </div>
             <div class="event-results hidden">
 
