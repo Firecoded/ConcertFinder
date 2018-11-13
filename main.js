@@ -467,7 +467,7 @@ function renderYelpDetails(details) {
 function startOver() {
     $('.event-results, .concert-details, .google-maps, .yelp').addClass('hidden');
     $('.home').removeClass('hidden');
-    history.pushState(null, null, location.origin + location.pathname);
+    history.replaceState(null, null, location.origin + location.pathname);
     venueSearchResults = [];
 }
 
