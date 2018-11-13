@@ -108,6 +108,8 @@ function handleSearchClick(e) {
     if($('#city').val() === ''){
         $('#city').css('border-bottom', '1px solid red');
         return;
+    } else {
+        $('#city').css('border-bottom', '1px solid #9e9e9e');
     }
     var genreInput = $('#genre :selected');
     var genre = genreInput.val();
@@ -140,6 +142,7 @@ function getVenueData(city, genre, listing) {
                 }
             } else {
                 showErrorModal("No concerts found in this area, try again!");
+                history.replaceState(null, null, location.origin + location.pathname)
             }
         },
         error: function (err) {
