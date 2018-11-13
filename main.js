@@ -19,7 +19,6 @@ function initializeApp() {
     $('select').formSelect();
     $('#genre').hide();
     let urlObj = returnURLArray(location.search);
-    console.log('url object initapp', urlObj)
     handleRouting(urlObj);
 }
 
@@ -72,7 +71,6 @@ function handlePopState(event){
 
 function returnURLArray(url){
     var splitArr = url.split('&');
-    console.log('splitarr', splitArr)
     switch(splitArr.length){
         case 1:
             var cityArr = splitArr[0].split('=')
