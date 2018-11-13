@@ -1,13 +1,4 @@
-/* Listen for the document to load and initialize the application
-* @param {function} initializeApp -
-*/
 $(document).ready(initializeApp);
-
-/**
- * Define all global variables here (below).
- */
-/*****************************
-*/
 var venueSearchResults = [];
 var buyTicketsUrl;
 var map;
@@ -23,26 +14,14 @@ var pageClasses = {
     'page5': '.yelp'
 };
 
-/***************************************************************************************************
- * initializeApp
- * @params {undefined} none
- * @returns: {undefined} none
- * initializes the application
- * @calls addClickHandlers
- */
-
 function initializeApp() {
     addClickHandlers();
     $('select').formSelect();
     $('#genre').hide();
+    let urlObj = returnURLArray(location.search);
+    console.log('url object initapp', urlObj)
+    handleRouting(urlObj);
 }
-
-/***************************************************************************************************
-* addClickHandlers()
-* @params {undefined}
-* @returns  {undefined}
-* using event delegation, adds click handlers to all elements that need to be clicked
-*/
 
 function addClickHandlers() {
     $('#searchGenre').click(handleSearchClick);
@@ -61,34 +40,79 @@ function addClickHandlers() {
     $('#bar').click(callBars);
     $('#restaurant').click(callRestaurant);
     $('#lodging').click(callHotels);
+    $(window).on('popstate', function(event) {
+        handlePopState(event);
+    });
 }
 
-/*************************************************************************************************
-* handleSearchClick()
-* store city and genre in local variables
-* @param: {undefined} none
-* @returns: {undefined} none
-* @calls getVenueData AJAX function with city and genre variables as parameters
-*/
+function handlePopState(event){
+    var urlObj = returnURLArray(location.search);
+    console.log('popstate', urlObj, event)
+    if(urlObj.listing !== undefined){
+        getVenueData(urlObj.city, urlObj.genre, urlObj.listing);
+        transitionPages('page4', 'page3');
+        $('.yelp').addClass('hidden');
+        return;
+    }
+    if(!urlObj.city){
+        transitionPages('page4', 'page1');
+        $('.yelp').addClass('hidden');
+        startOver();
+    } else{
+        getVenueData(urlObj.city, urlObj.genre);
+        transitionPages('page4', 'page2');
+        $('.yelp').addClass('hidden');
+    }
+}
 
+function returnURLArray(url){
+    var splitArr = url.split('&');
+    console.log('splitarr', splitArr)
+    switch(splitArr.length){
+        case 1:
+            var cityArr = splitArr[0].split('=')
+            return {'city': cityArr[1]};
+        case 2: 
+            var cityArr = splitArr[0].split('=');
+            var genreArr = splitArr[1].split('=');
+            return {'city': cityArr[1],
+                    'genre': genreArr[1]};
+        case 3: 
+            var cityArr = splitArr[0].split('=');
+            var genreArr = splitArr[1].split('=');
+            var listingArr = splitArr[2].split('=');
+            return {'city': cityArr[1],
+                    'genre': genreArr[1],
+                    'listing': listingArr[1]};    
+    }
+    
+}
+function handleRouting(urlObj){
+    if(!urlObj.city){
+        return;
+    }
+    if (urlObj.city !== undefined && urlObj.genre !== undefined && !urlObj.listing){
+        getVenueData(urlObj.city, urlObj.genre);
+        history.pushState(null, null, '?city=' + urlObj.city + '&genre=' + urlObj.genre);
+    } else if (urlObj.city !== undefined && urlObj.genre !== undefined && urlObj.listing !== undefined){
+        getVenueData(urlObj.city, urlObj.genre, urlObj.listing);
+        history.pushState(null, null, '?city=' + urlObj.city + '&genre=' + urlObj.genre + '&listing=' + urlObj.listing);
+    }
+
+}
 function handleSearchClick(e) {
     e.preventDefault();
+    if($('#city').val() === ''){
+        console.log('enter a city');
+    }
     var genreInput = $('#genre :selected');
     var genre = genreInput.val();
     var city = $('#city').val();
     getVenueData(city, genre);
+    history.pushState(null, null, '?city=' + city + '&genre=' + genre)
 }
 
-/*************************************************************************************************
-* getVenueData ajax function
-* @param: {string} city
-* @param: {string} genre
-* @returns runs ticketmaster ajax call and stores result into global array
-* @calls page2DomCreation function
-* @calls transitionPages function (hide page1, show page2)
-*/
-
-function getVenueData(city, genre) {
+function getVenueData(city, genre, listing) {
     var custUrl = 'https://app.ticketmaster.com/discovery/v2/events.jsonp?apikey=hNel2sQARoJR6Ac22KIbXszvF728H6e2';
     if (city) {
         custUrl += '&city=' + city;
@@ -106,6 +130,10 @@ function getVenueData(city, genre) {
                 $('#city').val('');
                 page2DomCreation(venueSearchResults);
                 transitionPages('page1', 'page2');
+                if(listing !== undefined){
+                    
+                    handlePage3Details(venueSearchResults[listing]);
+                }
             } else {
                 showErrorModal("No concerts found in this area, try again!");
             }
@@ -116,14 +144,6 @@ function getVenueData(city, genre) {
     };
     $.ajax(ajaxConfig);
 }
-
-/*************************************************************************************************
-* page2DomCreation function
-* using search results stored in global array, will create html elements with various info and then append the elements onto the page
-* will create a link on each dom element, possible store index number into dom element to be referenced later
-* dom element link will call handlePage3Details function with dom index as param
-* @param {array} venueSearchResults
-*/
 
 function page2DomCreation(venueSearchResults) {
     $('.events-body').empty();
@@ -163,11 +183,6 @@ function page2DomCreation(venueSearchResults) {
     }
 }
 
-/***************************************************************************************************
- * convertMilitaryTime
- * @params {string} milTime
- * @returns {string} timeValue - converted time
- */
 function convertMilitaryTime(milTime) {
     if (!milTime) {
         return;
@@ -190,55 +205,29 @@ function convertMilitaryTime(milTime) {
     return timeValue;
 }
 
-/***************************************************************************************************
- * initializeApp
- * @params {string} yyddmm - date
- * @returns {string} returnDate - converted date
- */
 function convertDateFormat(yyddmm) {
     var newDate = yyddmm.split('-');
     var returnDate = (newDate[1]) + '-' + newDate[2] + '-' + newDate[0];
     return returnDate;
 }
 
-/*************************************************************************************************
-* transitionPages
-* @params {string} pageToHide, {string} pageToShow - which page to show, which page to hide
-*/
 function transitionPages(pageToHide, pageToShow) {
     $(pageClasses[pageToHide]).addClass('hidden');
     $(pageClasses[pageToShow]).removeClass('hidden');
 }
 
-/**************************************************************************************************
-* goToMap - transitions to map from other pages
-* @param: {undefined} none
-* @returns: {undefined} none
-*/
 function goToMap() {
     $('.google-maps').removeClass('hidden');
     $('.concert-details').addClass('hidden');
     $('.yelp').addClass('hidden');
 }
 
-/**************************************************************************************************
- * handleDetailsClick - handles page 3 detail clicks, adds arrayIndex to the item in the array of venueSearchResults
- * @param: {undefined} none
- * @returns: {undefined} none
- */
 function handleDetailsClick() {
     var detailsIndex = $(this).attr('arrayindex');
     handlePage3Details(venueSearchResults[detailsIndex]);
+    history.pushState(null, null, location.search + '&listing=' + detailsIndex)
 }
 
-/*************************************************************************************************
-* handlePage3Details
-* @params {string} singleEvent - index of page 2 dom element clicked to reference global array
-* this function will pull details from global array and fill them onto page 3 template, artist name, venue, dates, image etc
-* variables for lat and long are stored to be passed later
-* this page will have 2 links for searchForBarsNearby and searchForRestuarantsNearby function with lat and long as params
-*/
-//passing in the index into this function
 function handlePage3Details(singleEvent) {
     //changing the span text to match the details for the event being generated
     buyTicketsUrl = singleEvent.url;
@@ -255,56 +244,25 @@ function handlePage3Details(singleEvent) {
     transitionPages('page2', 'page3');
 }
 
-/**********************************************************
- * callBars
- * @params none
- * calls initializeMap and passes in parameter we want to search for
- * calls goToMap
- */
 function callBars() {
     initializeMap('bar');
     goToMap();
 }
-
-/**********************************************************
- * callRestaurant
- * @params none
- * calls initializeMap and passes in parameter we want to search for
- * calls goToMap
- */
 
 function callRestaurant() {
     initializeMap('restaurant');
     goToMap();
 }
 
-/**********************************************************
- * callHotels
- * @params none
- * calls initializeMap and passes in parameter we want to search for
- * calls goToMap
- */
 function callHotels() {
     initializeMap('lodging');
     goToMap();
 }
 
-/**********************************************************
- * buyTicketsLink
- * @params none
- * opens link to purchase tickets from ticketmaster
-  */
-
 function buyTicketsLink() {
     var win = window.open(buyTicketsUrl, '_blank');
     win.focus();
 }
-
-/***************************************************************************************************
-* initializeMap
-* @param {string} type
-* takes in parameters from search for restaurants / bars / hotels to change type in var request to match what type of place person is searching for
-*/
 
 function initializeMap(type) {
     //defines location we are targeting on the map
@@ -333,12 +291,6 @@ function initializeMap(type) {
     service.nearbySearch(request, callback);
 }
 
-/***************************************************************************************************
- * callback - creates a student objects based on input fields in the form and adds the object to global student array
- * @param {string} results, {string} status
- * @return undefined
- * @calls createMarker
- */
 function callback(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
@@ -348,12 +300,6 @@ function callback(results, status) {
     }
 }
 
-/***************************************************************************************************
- * createMarker - creates a student objects based on input fields in the form and adds the object to global student array
- * @param {string} place
- * @return undefined
- * @calls goToYelp
- */
 function createMarker(place) {
     var placeLoc = place.geometry.location;
     if (place.icon) {
@@ -384,7 +330,6 @@ function createMarker(place) {
             var address1 = addressStringArray[0];
             var city = addressStringArray[1];
             $('.google-maps').on("click", ".yelp-transition", function (){
-                console.log(name, address1, city)
                 goToYelp(name, address1, city)
             });
             if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -417,13 +362,6 @@ function goToYelp(name, address1, city) {
     getYelpBusinessID(name, address1, city);
 }
 
-/*************************************************************
-* getYelpBusinessID function
-* @params {string} name, {string} address1, {string} city
-* run Andy's yelp api (using his proxy server to access Yelp API) to GET business id via business match endpoint
-* @calls (on success) the getYelpBusinessDetails function
-*/
-
 function getYelpBusinessID(name, address1, city) {
     var customURL = "https://yelp.ongandy.com/businesses/matches";
     var ajaxConfig = {
@@ -453,14 +391,6 @@ function getYelpBusinessID(name, address1, city) {
     };
     $.ajax(ajaxConfig);
 }
-
-/*************************************************************
- * getYelpBusinessDetails function
- * @params {string} id - variable businessID from getYelpBusinessID response
- * run Andy's yelp api (using his proxy server to access the Yelp business details via their '/business/{id}' endpoint
- * @calls showHidePage function hide page 4 show page 5
- * button on page to run startOver function
- */
 
 function getYelpBusinessDetails(id) {
     var detailsURL = "https://yelp.ongandy.com/businesses/details";
@@ -528,22 +458,12 @@ function renderYelpDetails(details) {
     $('#loader').addClass('hidden');
 }
 
-/*************************************************************************************************
-* startOver function
-* @param: {undefined} none
-* @returns: {undefined} none
-* basically reset button, go back to page one and empty array
-*/
 function startOver() {
     $('.event-results, .concert-details, .google-maps, .yelp').addClass('hidden');
     $('.home').removeClass('hidden');
     venueSearchResults = [];
 }
 
-/*************************************************************************************************
- * window.onclick function - when error modal pops up
- * basically reset button, go back to page one and empty array
- */
 window.onclick = function (event) {
     var modal = document.getElementById("errorModal");
 
@@ -552,9 +472,6 @@ window.onclick = function (event) {
     }
 };
 
-/*************************************************************************************************
- * showErrorModal - shows modal that displays error if no concerts in said city
- */
 function showErrorModal(errorText) {
     $('.searchBoxError .error-text').text(errorText);
     $('.shadow1').css('display', 'inline-block');
