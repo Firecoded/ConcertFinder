@@ -28,9 +28,13 @@ function addClickHandlers() {
     $('.reset').click(startOver);
     $('.reset-2').click(startOver);
     $(".events-body").on("click", ".details", handleDetailsClick);
+    // $('.results').click(function () {
+    //     transitionPages('page3', 'page2');
+    // });
     $('.results').click(function () {
-        transitionPages('page3', 'page2');
-    });
+        history.back();
+        $('.concert-details').addClass('hidden');
+    })
     $('.back-to-map').click(goToMap);
 
     $('#tickets').click(buyTicketsLink);
@@ -47,7 +51,8 @@ function addClickHandlers() {
 
 function handlePopState(event){
     var urlObj = returnURLArray(location.search);
-    console.log('popstate', urlObj, event)
+    var modal = document.getElementById("errorModal");
+    modal.style.display = "none";
     if(urlObj.listing !== undefined){
         getVenueData(urlObj.city, urlObj.genre, urlObj.listing);
         transitionPages('page4', 'page3');
@@ -103,7 +108,8 @@ function handleRouting(urlObj){
 function handleSearchClick(e) {
     e.preventDefault();
     if($('#city').val() === ''){
-        console.log('enter a city');
+        $('#city').css('border-bottom', '1px solid red');
+        return;
     }
     var genreInput = $('#genre :selected');
     var genre = genreInput.val();
@@ -461,6 +467,7 @@ function renderYelpDetails(details) {
 function startOver() {
     $('.event-results, .concert-details, .google-maps, .yelp').addClass('hidden');
     $('.home').removeClass('hidden');
+    history.pushState(null, null, location.origin);
     venueSearchResults = [];
 }
 
